@@ -29,18 +29,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstClipboard = new System.Windows.Forms.ListBox();
+            this.lstClipboard = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // lstClipboard
             // 
             this.lstClipboard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstClipboard.FormattingEnabled = true;
             this.lstClipboard.Location = new System.Drawing.Point(0, 0);
             this.lstClipboard.Name = "lstClipboard";
             this.lstClipboard.Size = new System.Drawing.Size(800, 450);
-            this.lstClipboard.Sorted = true;
             this.lstClipboard.TabIndex = 0;
+            this.lstClipboard.UseCompatibleStateImageBehavior = false;
+            this.lstClipboard.View = System.Windows.Forms.View.List;
             this.lstClipboard.DoubleClick += new System.EventHandler(this.lstClipboard_DoubleClick);
             // 
             // Form1
@@ -59,7 +59,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lstClipboard;
+        private System.Windows.Forms.ListView lstClipboard;
     }
 }
 

@@ -318,6 +318,16 @@ namespace ClipboardHistory.App
         {
             Clipboard.SetText(txt);
         }
+
+        private string _lastText = null;
+        private void MarkedCopy(string txt)
+        {
+            if(_lastText != txt)
+            {
+                _lastText = txt;
+                OnClipboardCopy?.Invoke(this, new ClipboardCopyEventArgs { Text = txt });
+            }
+        }
         
         /// <summary>
         /// Show the clipboard contents in the window 
@@ -330,7 +340,7 @@ namespace ClipboardHistory.App
             // IDataObject interface
             //
             IDataObject iData = new DataObject();
-            string strText = "clipmon";
+            
 
             try
             {
@@ -354,12 +364,8 @@ namespace ClipboardHistory.App
             if (iData.GetDataPresent(DataFormats.Rtf))
             {
                 var clipboardTxt = (string)iData.GetData(DataFormats.Rtf);
-                OnClipboardCopy?.Invoke(this, new ClipboardCopyEventArgs { Text = clipboardTxt });
+                MarkedCopy(clipboardTxt);
 
-                if (iData.GetDataPresent(DataFormats.Text))
-                {
-                    strText = "RTF";
-                }
             }
             else
             {
@@ -370,9 +376,8 @@ namespace ClipboardHistory.App
                 {
                     var clipboardTxt = (string)iData.GetData(DataFormats.Text);
 
-                    OnClipboardCopy?.Invoke(this, new ClipboardCopyEventArgs { Text = clipboardTxt });
-                    strText = "Text";
-
+                    MarkedCopy(clipboardTxt);
+                    
                     Debug.WriteLine((string)iData.GetData(DataFormats.Text));
                 }
                 else

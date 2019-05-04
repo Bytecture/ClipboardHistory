@@ -21,8 +21,6 @@ namespace ClipboardHistory.App
             _clipboardRegister = new ClipboardRegister(this.Handle);
             _clipboardRegister.OnClipboardCopy += _clipboardRegister_ClipboardCopy;
 
-            //new System.Resources.ResourceReader()
-
             this.taskbarIcon.Icon = new Icon("Resources/notifyIcon.ico");
             taskbarIcon.DoubleClick += TaskbarIcon_DoubleClick;
         }
@@ -36,23 +34,27 @@ namespace ClipboardHistory.App
 
         private void _clipboardRegister_ClipboardCopy(object sender, ClipboardCopyEventArgs e)
         {
-            lstClipboard.Items.Add(e.Text);
+            lstClipboard.Items.Insert(0, e.Text);
             
+
+
         }
 
+        private void lstClipboard_DoubleClick(object sender, EventArgs e)
+        {
+            if (lstClipboard.SelectedItems.Count == 1)
+            {
+                var txt = lstClipboard.SelectedItems[0].Text;
+                if (!string.IsNullOrEmpty(txt))
+                    _clipboardRegister.Copy(txt);
+            }
+        }
         ClipboardRegister _clipboardRegister;
         private void Form1_Load(object sender, EventArgs e)
         {
             _clipboardRegister.RegisterClipboardViewer();
 
         }
-
-        [STAThread]
-        static void Main()
-        {
-            Application.Run(new Form1());
-        }
-
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
@@ -142,10 +144,11 @@ namespace ClipboardHistory.App
             }
         }
 
-        private void lstClipboard_DoubleClick(object sender, EventArgs e)
+
+        [STAThread]
+        static void Main()
         {
-            if (!string.IsNullOrEmpty(lstClipboard.Text))
-                _clipboardRegister.Copy(lstClipboard.Text);
+            Application.Run(new Form1());
         }
     }
 }
